@@ -36,17 +36,16 @@ class App(ctk.CTk):
         self.temperature_label.grid(column=0, row=2,padx=20,)
         self.description_label.grid(column=0, row=3, padx=20, pady=20)
 
-    def show_info(self):
+    def show_info(self) -> None:
         CTkMessagebox(title="Warning Message!", message="Unable to find city",
                       icon="warning", option_1="Cancel", option_2="Retry")
 
-    def get_weather(self, city):
+    def get_weather(self:any, city: str) -> str:
         self.API_KEY = "your_own_api_key"
         self.url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={self.API_KEY}"
         self.res = requests.get(self.url)
         if self.res.status_code == 404:
             self.show_info()
-            return None
         try:
             self.weather = self.res.json()
             self.icon_id = self.weather['weather'][0]['icon']
@@ -62,7 +61,7 @@ class App(ctk.CTk):
         self.icon_url = f"https://openweathermap.org/img/wn/{self.icon_id}@2x.png"
         return self.icon_url, self.temperature, self.description, city, self.country
 
-    def search_weather(self):
+    def search_weather(self) -> None:
         city = self.search.get()
         result = self.get_weather(city)
         if result:
